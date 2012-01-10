@@ -7,6 +7,12 @@ module Sensu
   class Handler
     include Sensu::Plugin::Utils
 
+    attr_accessor :settings
+
+    def initialize
+      load_settings
+    end
+
     # Implementing classes should override this.
 
     def handle
@@ -49,7 +55,7 @@ module Sensu
     end
 
     def api_request(method, path, &blk)
-      http = Net::HTTP.new(settings['api']['host'], settings['api']['port'])
+      http = Net::HTTP.new(@settings['api']['host'], @settings['api']['port'])
       req = net_http_req_class(method).new(path)
       if settings['api']['user'] && settings['api']['password']
         req.basic_auth(settings['api']['user'], settings['api']['password'])

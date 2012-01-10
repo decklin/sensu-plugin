@@ -15,7 +15,7 @@ module Sensu
       end
 
       def settings
-        @settings ||= config_files.map {|f| load_config(f) }.reduce {|a, b| a.deep_merge(b) }
+        @settings = config_files.map {|f| load_config(f) }.reduce {|a, b| a.deep_merge(b) }
       end
 
       def read_event(file)
