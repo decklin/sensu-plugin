@@ -2,11 +2,17 @@ module Sensu
   module Plugin
     module Utils
 
+      # Unfortunately, we need to reimplement config loading. This is not a
+      # great way to override paths but we don't want to occupy any command
+      # line options.
+
       def config_files
         if ENV['SENSU_CONFIG_FILES']
           ENV['SENSU_CONFIG_FILES'].split(':')
         else
-          ['/etc/sensu/config.json'] + Dir['/etc/sensu/conf.d/*.json']
+          config_file = ENV['SENSU_CONFIG'] || '/etc/sensu/config.json'
+          config_dir = ENV['SENSU_CONF_D'] || '/etc/sensu/conf.d'
+          [config_file] + Dir[File.join(config_dir, '*.json')].sort
         end
       end
 
