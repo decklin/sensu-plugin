@@ -17,10 +17,12 @@ module Sensu
     # Implementation of the default filters is below.
 
     def filter
-      filter_disabled
-      filter_repeated
-      filter_silenced
-      filter_dependencies
+      unless @event['action'] == 'resolve'
+        filter_disabled
+        filter_repeated
+        filter_silenced
+        filter_dependencies
+      end
     end
 
     # This works just like Plugin::CLI's autorun.
